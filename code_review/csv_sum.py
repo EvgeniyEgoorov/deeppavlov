@@ -9,7 +9,7 @@ import pandas as pd
 3) Обернул метод read_csv() в конструкцию try/except - функция будет поднимать ошибку если указанный файл не найден, 
    или пуст;
 4) С помощью select_dtypes в функцию sum_checker передаем данные типа int и float, если в .csv файле будет колонка с 
-   данными типа str - она отсеется;
+   данными типа str - она отсеется (предполанается, что в колонках данные одного типа);
 5) Внутри функции sum_checker() добавил метод fillna(0), который  заменит осутствующие данные объектов (если такие будут
    в .csv файле) на числовые значения (в нашем случае на 0)
 
@@ -17,16 +17,19 @@ import pandas as pd
 
 
 def sum_checker(data):
-    return data.fillna(0).values.sum() == 10
-
-
+  return data.fillna(0).values.sum() == 10
+  
 def reader(path):
     try:
         df = pd.read_csv(path, header=None)
-        print(sum_checker(df.select_dtypes(include=['float64', 'int64'])))
-    except (pd.errors.EmptyDataError,
-            FileNotFoundError) as e:
-        print("Testing multiple exceptions. {}".format(e.args[-1]))
+        return df.select_dtypes(include=['float64', 'int64'])
+    except (pd.errors.EmptyDataError) as e:
+        print("Файл пуст")
+        raise e
+    except (FileNotFoundError) as e:
+        print("Файл не найден")
+        raise e
+    
 
-
-reader('data.csv')
+if __name__ == '__main__':
+    print(sum_checker(reader('data.csv')))
