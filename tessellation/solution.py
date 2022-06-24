@@ -5,7 +5,6 @@ class KnightsTour:
     def __init__(self, w, h):
         self.w = w
         self.h = h
-        # self.board = np.zeros([w, h], dtype=int)
         self.board = [[None] * h for i in range(w)]
         self.knight_tour = []
 
@@ -39,13 +38,9 @@ class KnightsTour:
     def next_move(self, pos):
         result = None
         min_weight = 8  # максимальное для коня кол-во вариантов для с следующего хода
-        # print(min_weight)
         neighbours = self.possible_moves(pos)
-        # print(f'neighbours -> {neighbours}')
         for neighbour in neighbours:
-            # print(f'neighbour -> {neighbour}')
             curr_weight = len(self.possible_moves(neighbour))
-            # print(f'curr -> {curr_weight}')
             if curr_weight < min_weight:
                 result = neighbour
                 min_weight = curr_weight
