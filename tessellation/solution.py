@@ -1,4 +1,5 @@
-import random 
+import random
+from typing import List
 
 
 class KnightsTour:
@@ -8,20 +9,17 @@ class KnightsTour:
         self.board = [[None] * h for i in range(w)]
         self.knight_tour = []
 
-
-    def is_valid(self, pos, passed=False):
+    def is_valid(self, pos: list, passed=False) -> bool:
         if not passed:
             return (
-                pos[0] >= 0
-                and pos[0] < self.w
-                and pos[1] >= 0
-                and pos[1] < self.h
-                and self.board[pos[0]][pos[1]] is None
+                    0 <= pos[0] < self.w
+                    and 0 <= pos[1] < self.h
+                    and self.board[pos[0]][pos[1]] is None
             )
         else:
-            return pos[0] >= 0 and pos[0] < self.w and pos[1] >= 0 and pos[1] < self.h
+            return 0 <= pos[0] < self.w and 0 <= pos[1] < self.h
 
-    def possible_moves(self, pos):
+    def possible_moves(self, pos: list) -> list:
         result = []
         moves = [[2, 1], [2, -1], [1, 2], [1, -2], [-2, 1], [-2, -1], [-1, 2], [-1, -2]]
         for move in moves:
@@ -35,9 +33,9 @@ class KnightsTour:
                     return [new_pos]
         return result
 
-    def next_move(self, pos):
+    def next_move(self, pos: list) -> list:
         result = None
-        min_weight = 8  # максимальное для коня кол-во вариантов для с следующего хода
+        min_weight = 8  # the max number of options for the knight's next move
         neighbours = self.possible_moves(pos)
         for neighbour in neighbours:
             curr_weight = len(self.possible_moves(neighbour))
@@ -46,7 +44,7 @@ class KnightsTour:
                 min_weight = curr_weight
         return result
 
-    def calculate_route(self, start_pos):
+    def calculate_route(self, start_pos: list) -> list:
         move_counter = 0
         unique_cells = 0
         curr_pos = start_pos
@@ -60,7 +58,7 @@ class KnightsTour:
             move_counter += 1
 
 
-def main(desk_size):
+def main(desk_size: list) -> list:
     w = desk_size[0]
     h = desk_size[1]
     start_pos = [0, 0]
